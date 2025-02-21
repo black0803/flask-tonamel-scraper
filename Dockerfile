@@ -6,8 +6,8 @@
 
 # # Code file to execute when the docker container starts up (`entrypoint.sh`)
 # ENTRYPOINT ["/entrypoint.sh"]
-ARG CHROMEDRIVER_PATH="chromedriver"
 FROM python:3.12.5-alpine3.19
+ARG CHROMEDRIVER_PATH="chromedriver"
 COPY source/requirements.txt .
 RUN pip install -r requirements.txt
 COPY source .
