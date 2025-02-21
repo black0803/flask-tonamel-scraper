@@ -17,7 +17,7 @@ jobs:
     - name: Download and extract external zip
       run: |
         wget -O external.zip "https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.126/linux64/chromedriver-linux64.zip"
-        unzip external.zip -d ${{ env.GITHUB_WORKSPACE }}/external_data  # Extracts to a directory named 'external_data'
+        unzip external.zip -d /tmp/external_data  # Extracts to a directory named 'external_data'
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -37,4 +37,4 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/flask-tonamel-scraper:latest
           ${{ secrets.DOCKERHUB_USERNAME }}/flask-tonamel-scraper:${{ github.sha }}
         build-args: |
-          CHROMEDRIVER_PATH:${{ env.GITHUB_WORKSPACE }}/external_data/chromedriver
+          CHROMEDRIVER_PATH:/tmp/external_data/chromedriver
