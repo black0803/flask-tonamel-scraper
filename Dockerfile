@@ -11,5 +11,5 @@ FROM python:3.12.5-alpine3.19
 COPY source/requirements.txt .
 RUN pip install -r requirements.txt
 COPY source .
-COPY ${CHROMEDRIVER_PATH} .
+COPY ${CHROMEDRIVER_PATH}/chromedriver-linux64/chromedriver .
 CMD ["python", "app.py"]
