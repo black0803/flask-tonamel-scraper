@@ -14,7 +14,7 @@ def root_path():
 def root_submit():
     data = request.form['event_id']
     div_selector = "matchup-card__inner"  # Replace with the CSS selector of the div
-    data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data+"/tournament", div_selector, os.getenv("CHROMEDRIVER","chromedriver"))
+    data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data+"/tournament", div_selector, os.getenv("CHROMEDRIVER","/usr/bin/chromedriver"))
     if data:
         return data
     else:
@@ -29,7 +29,7 @@ def scrape():
         data = request.json
         div_selector = "matchup-card__inner"  # Replace with the CSS selector of the div
         try:
-            data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data.get('event_id')+"/tournament", div_selector, "chromedriver.exe")
+            data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data+"/tournament", div_selector, os.getenv("CHROMEDRIVER","/usr/bin/chromedriver"))
         except:
             data = False
         

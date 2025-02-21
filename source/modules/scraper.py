@@ -10,6 +10,8 @@ def scrape_with_selenium(url, div_selector, webdriver_path):
     try:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--headless")  # Run Chrome in headless mode (no browser window) - optional
+        chrome_options.add_argument('--no-sandbox')  # Often needed in containers
+        chrome_options.add_argument('--disable-dev-shm-usage') # Often needed in containers
         webdriver_service = Service(webdriver_path) # Or just "chromedriver" if it's in your PATH
         driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
         
