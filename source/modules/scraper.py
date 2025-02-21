@@ -16,32 +16,42 @@ def scrape_with_selenium(url, div_selector, webdriver_path):
         # 2. Load the webpage
         driver.get(url)
 
-        # 3. Wait for the specific div to load (important!)
-        # Adjust the timeout as needed
         try:
-            button_present = EC.element_to_be_clickable((By.CLASS_NAME, "round"))
-            WebDriverWait(driver, 20).until(button_present)
+            elements_present = EC.presence_of_all_elements_located((By.CLASS_NAME, "matchup-card__inner"))
+            WebDriverWait(driver, 20).until(elements_present)  # Wait up to 10 seconds
         except Exception as e:
-            print(f"Error waiting for element: {e}")
+            print(f"Error waiting for elements: {e}")
             return None # Or handle the error as you see fit
-
-        
-        time.sleep(10)
-        buttons = driver.find_elements(By.CLASS_NAME, "round")
-        
-        # 4. Extract the content of the div
         div = driver.find_elements(By.CLASS_NAME, div_selector)
+    
         div_content = getcards(div)
         all_round = {"Round 1": div_content}
-        
+
+        try:
+            elements_present = EC.presence_of_all_elements_located((By.CLASS_NAME, "round"))
+            WebDriverWait(driver, 20).until(elements_present)  # Wait up to 10 seconds
+        except Exception as e:
+            print(f"Error waiting for elements: {e}")
+            return None # Or handle the error as you see fit
+        buttons = driver.find_elements(By.CLASS_NAME, "round")
+
         round_counter = 1
         for button in buttons:
             round_counter += 1
+            # button_present = EC.element_to_be_clickable((By.CLASS_NAME, "round"))
+            # WebDriverWait(driver, 20).until(button_present)
             button.click()
-            time.sleep(10)
+
+            try:
+                elements_present = EC.presence_of_all_elements_located((By.CLASS_NAME, div_selector))
+                WebDriverWait(driver, 20).until(elements_present)  # Wait up to 10 seconds
+            except Exception as e:
+                print(f"Error waiting for elements: {e}")
+                return None # Or handle the error as you see fit
             div = driver.find_elements(By.CLASS_NAME, div_selector)
             div_content = getcards(div)
             all_round.update({"Round "+str(round_counter): div_content})
+            # time.sleep(10)
             
         return all_round
 
@@ -52,6 +62,16 @@ def scrape_with_selenium(url, div_selector, webdriver_path):
 def getcards(div):
     div_content = []
     for card in div:
-        text_content = card.text
-        div_content.append(text_content)
+        cards = card.text
+        parts = cards.split('\n')
+        match_data = {
+            "match": parts[0],
+            "player1": parts[1],
+            "player1_id": parts[2],
+            "player1_score": int(parts[3]),
+            "player2": parts[4],
+            "player2_id": parts[5],
+            "player2_score": int(parts[6])
+        }
+        div_content.append(match_data)
     return div_content
