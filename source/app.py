@@ -1,6 +1,7 @@
 import modules.scraper
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
+import os
 
 load_dotenv()
 app = Flask(__name__)
@@ -13,7 +14,7 @@ def root_path():
 def root_submit():
     data = request.form['event_id']
     div_selector = "matchup-card__inner"  # Replace with the CSS selector of the div
-    data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data+"/tournament", div_selector, "chromedriver.exe")
+    data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data+"/tournament", div_selector, os.getenv("CHROMEDRIVER","chromedriver"))
     if data:
         return data
     else:
