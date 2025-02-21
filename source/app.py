@@ -1,8 +1,6 @@
 import modules.scraper
 from dotenv import load_dotenv
-import os
-import requests
-from flask import Flask, render_template, request, send_file, jsonify, url_for
+from flask import Flask, render_template, request, jsonify
 
 load_dotenv()
 app = Flask(__name__)
