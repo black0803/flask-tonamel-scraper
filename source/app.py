@@ -29,7 +29,7 @@ def scrape():
         data = request.json
         div_selector = "matchup-card__inner"  # Replace with the CSS selector of the div
         try:
-            data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data+"/tournament", div_selector, os.getenv("CHROMEDRIVER","/usr/bin/chromedriver"))
+            data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+data["event_id"]+"/tournament", div_selector, os.getenv("CHROMEDRIVER","/usr/bin/chromedriver"))
         except:
             data = False
         
