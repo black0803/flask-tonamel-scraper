@@ -3,6 +3,10 @@ name: Docker Build
 on:
   push:
     branches: [ "main" ]
+    paths-ignore: 
+      - '**.md'
+      - '**app_manifest.yaml'
+      - '**ignore'
   pull_request:
     branches: [ "main" ]
 
