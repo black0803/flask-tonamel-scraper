@@ -1,15 +1,14 @@
-import modules.scraper
-import os
 from dotenv import load_dotenv
 import boto3
 import json
+import os
 
 load_dotenv()
 # data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/YaSgI/tournament", "matchup-card__inner", os.getenv("CHROMEDRIVER","/usr/bin/chromedriver"))
 # print(data)
 
-dynamodb = boto3.resource('dynamodb',endpoint_url='http://192.168.1.101:8000',
-                region_name='None', aws_access_key_id='None', aws_secret_access_key='None')
+dynamodb = boto3.resource('dynamodb',endpoint_url=os.getenv("DYNAMODB_ENDPOINT","http://localhost:8000"),
+                region_name='None') #, aws_access_key_id='None', aws_secret_access_key='None')
 table = dynamodb.Table("tonamel_events")
 
 def get_item_by_event_id(event_id):
@@ -29,7 +28,7 @@ def get_item_by_event_id(event_id):
         return None  # Return None on error
 
 # Example usage:
-event_id_to_query = 'dco5a'  # Replace with the event_id you want to query
+event_id_to_query = os.getenv("EVENT_ID","")  # Replace with the event_id you want to query
 retrieved_item = get_item_by_event_id(event_id_to_query)
 
 if retrieved_item:
