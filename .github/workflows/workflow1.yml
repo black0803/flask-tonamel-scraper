@@ -5,8 +5,10 @@ on:
     branches: [ "main" ]
     paths-ignore: 
       - '**.md'
-      - '**app_manifest.yaml'
+      - '**.yaml'
+      - '**.yml'
       - '**ignore'
+      - '**flask-server**'
   pull_request:
     branches: [ "main" ]
 
@@ -36,10 +38,10 @@ jobs:
     - name: Build Docker image
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: tonamel-scraper
         push: ${{ github.event_name != 'pull_request' }}
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/flask-tonamel-scraper:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/flask-tonamel-scraper:${{ github.sha }}
+          ${{ secrets.DOCKERHUB_USERNAME }}/tonamel-scraper:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/tonamel-scraper:${{ github.sha }}
         # build-args: |
         #   CHROMEDRIVER_PATH=external_data/
