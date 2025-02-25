@@ -29,8 +29,8 @@ except ClientError as e:  # Catch ClientError
         sqs_client = boto3.client('sqs',  # Create a client *just* for queue creation
                                 endpoint_url=os.getenv("SQS_ENDPOINT","http://localhost:9324"),
                                 region_name='elasticmq',
-                                aws_secret_access_key='x',
-                                aws_access_key_id='x',
+                                # aws_secret_access_key='x',
+                                # aws_access_key_id='x',
                                 use_ssl=False)
         create_response = sqs_client.create_queue(QueueName="tonamel_queue")
         new_queue_url = create_response['QueueUrl']
