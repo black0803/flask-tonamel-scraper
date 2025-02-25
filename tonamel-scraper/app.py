@@ -7,14 +7,14 @@ from botocore.exceptions import ClientError  # Import ClientError
 load_dotenv()
 # initialize boto3 resources
 sqs = boto3.resource('sqs',
-                        endpoint_url='http://192.168.1.101:9324',
+                        endpoint_url=os.getenv("SQS_ENDPOINT","http://localhost:9324"),
                         region_name='elasticmq',
-                        aws_secret_access_key='x',
-                        aws_access_key_id='x',
+                        # aws_secret_access_key='x',
+                        # aws_access_key_id='x',
                         use_ssl=False)
 
-dynamodb = boto3.resource('dynamodb',endpoint_url='http://192.168.1.101:8000',
-                region_name='None', aws_access_key_id='None', aws_secret_access_key='None')
+dynamodb = boto3.resource('dynamodb',endpoint_url=os.getenv("DYNAMODB_ENDPOINT","http://localhost:8000"),
+                region_name='None') #, aws_access_key_id='None', aws_secret_access_key='None')
 
 queue = None
 # make sure sqs exists
@@ -27,7 +27,7 @@ except ClientError as e:  # Catch ClientError
     print(f"Queue tonamel_queue does not exist.")
     try:
         sqs_client = boto3.client('sqs',  # Create a client *just* for queue creation
-                                endpoint_url='http://192.168.1.101:9324',
+                                endpoint_url=os.getenv("SQS_ENDPOINT","http://localhost:9324"),
                                 region_name='elasticmq',
                                 aws_secret_access_key='x',
                                 aws_access_key_id='x',
