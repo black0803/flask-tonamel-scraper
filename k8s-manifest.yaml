@@ -1,0 +1,163 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: flask-tonamel-test
+#   labels:
+#     app: flask-tonamel-scraper
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: flask-tonamel-scraper
+#   template:
+#     metadata:
+#       labels:
+#         app: flask-tonamel-scraper
+#     spec:
+#       containers:
+#       - name: flask-scraper
+#         image: black0803/flask-tonamel-scraper:latest
+#         ports:
+#         - containerPort: 8080
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: flask-tonamel-service
+# spec:
+#   selector:
+#     app: flask-tonamel-scraper
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 8080
+#   type: LoadBalancer
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: sqs-elasticmq
+#   labels:
+#     app: sqs-elasticmq
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: sqs-elasticmq
+#   template:
+#     metadata:
+#       labels:
+#         app: sqs-elasticmq
+#     spec:
+#       containers:
+#       - name: elasticmq
+#         image: docker.io/softwaremill/elasticmq-native:latest
+#         ports:
+#         - containerPort: 9324
+#         - containerPort: 9325
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: sqs-elasticmq-service
+# spec:
+#   selector:
+#     app: sqs-elasticmq
+#   ports:
+#     - protocol: TCP
+#       port: 9324
+#       targetPort: 9324
+#       name: rest-sqs-port
+#     - protocol: TCP
+#       port: 9325
+#       targetPort: 9325
+#       name: ui-port
+#   type: LoadBalancer
+# # ---
+# # apiVersion: v1
+# # kind: ConfigMap
+# # metadata:
+# #   name: scylla-config
+# # data:
+# #   scylla.yaml: |
+# #     cluster_name: dynamodb
+# #     listen_address: 0.0.0.0  # Or the pod's IP
+# #     rpc_address: 0.0.0.0     # Or the pod's IP
+# #     seed_provider:
+# #       class_name: simple_seeds
+# #       seeds: 127.0.0.1        # Or the pod's IP
+# #     data_file_directories:
+# #       - /var/lib/scylla/data  # Must be a persistent volume
+# #     commitlog_directory: /var/lib/scylla/commitlog # Must be a persistent volume
+# #     hints_directory: /var/lib/scylla/hints # Must be a persistent volume
+# #     developer_mode: true      # For development only!
+# #     auto_bootstrap: true
+# # apiVersion: apps/v1
+# # kind: Deployment
+# # metadata:
+# #   name: dynamodb-scylla-test  # <--- Different name
+# #   labels:
+# #     app: dynamodb-scylla-test
+# # spec:
+# #   replicas: 1
+# #   selector:
+# #     matchLabels:
+# #       app: dynamodb-scylla-test
+# #   template:
+# #     metadata:
+# #       labels:
+# #         app: dynamodb-scylla-test
+# #     spec:
+# #       containers:
+# #       - name: scylladb
+# #         image: docker.io/scylladb/scylla:6.2.2  # Or latest
+# #         command: ["/bin/scylla"]
+# #         args: ["--alternator-port", "8000"]
+# #         ports:
+# #         - containerPort: 8000
+#         # resources:
+#         #   requests:
+#         #     cpu: "1" # Adjust as needed
+#         #     memory: "1G" # Adjust as needed
+#         #   limits:
+#         #     cpu: "1"  # Adjust as needed
+#         #     memory: "4G"  # Adjust as needed
+#       #   volumeMounts: # For persistent storage (optional)
+#       #     - name: scylla-configmap # Mount the configMap
+#       #       mountPath: /var/lib/scylla/conf/scylla.yaml
+#       #       subPath: scylla.yaml
+#       #     - name: scylla-data
+#       #       mountPath: /var/lib/scylla
+#       # volumes: # For persistent storage (optional)
+#       #   - name: scylla-configmap
+#       #     configMap:
+#       #       name: scylla-config
+#       #   - name: scylla-data
+#       #     persistentVolumeClaim:
+#       #       claimName: scylla-pvc # Create a PVC separately
+
+# # ---
+# # apiVersion: v1
+# # kind: Service
+# # metadata:
+# #   name: dynamodb-scylla-service
+# # spec:
+# #   selector:
+# #     app: dynamodb-scylla
+# #   ports:
+# #     - protocol: TCP
+# #       port: 8000
+# #       targetPort: 8000      
+# #   type: LoadBalancer
+# # ---
+# # # Persistent Volume Claim (Optional - for data persistence)
+# # apiVersion: v1
+# # kind: PersistentVolumeClaim
+# # metadata:
+# #   name: scylla-pvc
+# # spec:
+# #   accessModes: [ "ReadWriteOnce" ] # Or ReadWriteMany if your storage supports it
+# #   resources:
+# #     requests:
+# #       storage: 10Gi # Adjust the size as needed
+# #   storageClassName: standard # Or the name of your storage class
