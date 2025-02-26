@@ -6,7 +6,7 @@ on:
     paths-ignore: 
       - '**.md'
       - '**.yaml'
-      - '**.yml'
+      - '**docker-compose.yml'
       - '**ignore'
       - '**tonamel-scraper**'
   pull_request:
