@@ -20,6 +20,13 @@ def scrape_with_selenium(url, div_selector, webdriver_path):
         driver.get(url)
 
         try:
+            elements_containing_text = driver.find_elements(By.XPATH, f"//*[contains(text(), 'Event does not exist.')]") # Find all elements containing text
+            if elements_containing_text:
+                return None
+        except Exception as e:
+            print("Proceed to query rounds")
+
+        try:
             elements_present = EC.presence_of_all_elements_located((By.CLASS_NAME, "matchup-card__inner"))
             WebDriverWait(driver, 20).until(elements_present)  # Wait up to 10 seconds
         except Exception as e:

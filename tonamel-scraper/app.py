@@ -77,8 +77,15 @@ if __name__ == "__main__":
         while(True):
             for message in queue.receive_messages():
                 event_id = message.body
+                if len(event_id) > 5:
+                    table.delete_item(Item={'event_id': event_id})
+                    message.delete()
+                    continue
                 data = modules.scraper.scrape_with_selenium("https://tonamel.com/competition/"+event_id+"/tournament", "matchup-card__inner", os.getenv("CHROMEDRIVER","/usr/bin/chromedriver"))
                 print(data)
-                table.put_item(Item={'event_id': event_id, 'data': str(data)})
+                if data:
+                    table.put_item(Item={'event_id': event_id, 'data': str(data)})
+                else:
+                    table.delete_item(Item={'event_id': event_id})
                 message.delete()
  
