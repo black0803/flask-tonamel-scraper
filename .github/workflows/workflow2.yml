@@ -41,7 +41,7 @@ jobs:
         context: flask-server
         push: ${{ github.event_name != 'pull_request' }}
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/flask-tonamel-scraper-server:latest
           ${{ secrets.DOCKERHUB_USERNAME }}/flask-tonamel-scraper-server:${{ github.sha }}
         # build-args: |
         #   CHROMEDRIVER_PATH=external_data/
