@@ -1,3 +1,5 @@
+import json
+
 def get_item_by_event_id(event_id, table):
     if len(event_id) > 5:
         return None
@@ -19,5 +21,5 @@ def get_item_by_event_id(event_id, table):
 def put_event_id(event_id, table):
     if len(event_id) > 5:
         return None
-    table.put_item(Item={'event_id': event_id, 'data': {'status':'pending'}})
-    return {'event_id': event_id, 'data': {'status':'pending'}}
+    table.put_item(Item={'event_id': event_id, 'data': str(json.dumps({'status':'pending'}))})
+    return {'event_id': event_id, 'data': str(json.dumps({'status':'pending'}))}
