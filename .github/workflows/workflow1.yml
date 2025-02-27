@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build Tonamel Scraper
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - '**.yml'
       - '**ignore'
       - '**flask-server**'
+      - '**LICENSE**'
   pull_request:
     branches: [ "main" ]
 

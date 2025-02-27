@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build Flask Server
 
 on:
   push:
@@ -6,9 +6,10 @@ on:
     paths-ignore: 
       - '**.md'
       - '**.yaml'
-      - '**docker-compose.yml'
+      - '**.yml'
       - '**ignore'
       - '**tonamel-scraper**'
+      - '**LICENSE**'
   pull_request:
     branches: [ "main" ]
 

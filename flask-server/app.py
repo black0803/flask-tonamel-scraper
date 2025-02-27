@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 import boto3
 from botocore.exceptions import ClientError  # Import ClientError
@@ -10,6 +10,7 @@ load_dotenv()
 app = Flask(__name__)
 
 sqs_use_ssl = os.environ.get('SQS_USE_SSL', 'True').lower() == 'true'
+use_scylla = os.environ.get('USE_SCYLLA', 'True').lower() == 'true'
 
 sqs1 = boto3.resource('sqs',
                         endpoint_url=os.getenv("SQS_ENDPOINT",None),
@@ -150,6 +151,12 @@ def query_get():
         return jsonify({
             "output": "Event not found" 
         }) 
+
+@app.get("/license")
+def license():
+    if use_scylla:
+        return send_from_directory(os.path.join(app.root_path, 'licenses'),'LICENSE-AGPL',mimetype="text/plain")
+    return send_from_directory(os.path.join(app.root_path, 'licenses'),'LICENSE-MIT',mimetype="text/plain")
 
 if __name__ == "__main__":
     from waitress import serve

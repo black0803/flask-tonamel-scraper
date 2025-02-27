@@ -24,6 +24,7 @@ services:
       - SQS_ENDPOINT=http://sqs-elasticmq:9324
       - DYNAMODB_ENDPOINT=http://scylla:8000
       - SQS_USE_SSL=False
+      - USE_SCYLLA=True
     networks:
       - my-network
     restart: unless-stopped
@@ -40,6 +41,7 @@ services:
       - SQS_ENDPOINT=http://sqs-elasticmq:9324
       - DYNAMODB_ENDPOINT=http://scylla:8000
       - SQS_USE_SSL=False
+      - USE_SCYLLA=True
     networks:
       - my-network
     restart: unless-stopped

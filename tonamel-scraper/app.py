@@ -8,6 +8,7 @@ load_dotenv()
 # initialize boto3 resources
 
 sqs_use_ssl = os.environ.get('SQS_USE_SSL', 'True').lower() == 'true'
+use_scylla = os.environ.get('USE_SCYLLA', 'True').lower() == 'true'
 
 sqs = boto3.resource('sqs',
                         endpoint_url=os.getenv("SQS_ENDPOINT",None),
@@ -73,8 +74,25 @@ except ClientError as e:
         except Exception as e:
             print(f"Error: {e}")
 
+def print_agpl_license_notice():
+    print("Application started. This application is running with ScyllaDB and is licensed under the AGPLv3.")
+    print("The AGPLv3 requires that the source code of any modified version running as a network service be made available.")
+    print("Full license text and source code can be found at: https://github.com/black0803/flask-tonamel-scraper")
+    print("The LICENSE-AGPL file is included in the application's directory.")
+
+def print_mit_license_notice():
+    print("Application started. This application is licensed under the MIT License.")
+    print("The MIT License grants broad permissions for use, modification, and distribution.")
+    print("Full license text and source code can be found at: https://github.com/black0803/flask-tonamel-scraper")
+    print("The LICENSE-MIT file is included in the application's directory.")
+
 if __name__ == "__main__":
     # main program
+    if use_scylla:
+        print_agpl_license_notice()
+    else:
+        print_mit_license_notice()
+
     if queue:
         while(True):
             for message in queue.receive_messages():
