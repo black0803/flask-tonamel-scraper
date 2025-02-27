@@ -6,16 +6,18 @@ from botocore.exceptions import ClientError  # Import ClientError
 
 load_dotenv()
 # initialize boto3 resources
+
+sqs_use_ssl = os.environ.get('SQS_USE_SSL', 'True').lower() == 'true'
+
 sqs = boto3.resource('sqs',
-                        endpoint_url=os.getenv("SQS_ENDPOINT","http://localhost:9324"),
-                        region_name='elasticmq',
+                        endpoint_url=os.getenv("SQS_ENDPOINT",None),
+                        region_name=os.getenv("AWS_REGION",None),
                         # aws_secret_access_key='x',
                         # aws_access_key_id='x',
-                        use_ssl=False)
+                        use_ssl=sqs_use_ssl)
 
-dynamodb = boto3.resource('dynamodb',endpoint_url=os.getenv("DYNAMODB_ENDPOINT","http://localhost:8000"),
-                region_name='None') #, aws_access_key_id='None', aws_secret_access_key='None')
-
+dynamodb = boto3.resource('dynamodb',endpoint_url=os.getenv("DYNAMODB_ENDPOINT",None),
+                region_name=os.getenv("AWS_REGION",None)) #, aws_access_key_id='None', aws_secret_access_key='None')
 queue = None
 # make sure sqs exists
 try:

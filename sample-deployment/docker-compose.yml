@@ -22,10 +22,8 @@ services:
       - AWS_SECRET_ACCESS_KEY=None
       - AWS_REGION=None
       - SQS_ENDPOINT=http://sqs-elasticmq:9324
-      - SQS_QUEUE_NAME=your_queue_name
       - DYNAMODB_ENDPOINT=http://scylla:8000
-      - DYNAMODB_REGION=your_dynamodb_region
-      - DYNAMODB_TABLE_NAME=your_table_name
+      - SQS_USE_SSL=False
     networks:
       - my-network
     restart: unless-stopped
@@ -40,10 +38,8 @@ services:
       - AWS_SECRET_ACCESS_KEY=None
       - AWS_REGION=None
       - SQS_ENDPOINT=http://sqs-elasticmq:9324
-      - SQS_QUEUE_NAME=your_queue_name
       - DYNAMODB_ENDPOINT=http://scylla:8000
-      - DYNAMODB_REGION=your_dynamodb_region
-      - DYNAMODB_TABLE_NAME=your_table_name
+      - SQS_USE_SSL=False
     networks:
       - my-network
     restart: unless-stopped
